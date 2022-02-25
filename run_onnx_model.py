@@ -2,13 +2,7 @@ import torch
 import onnxruntime as ort
 import numpy as np
 
-"""
-graph torch-jit-export (
-  %batch_imgs[FLOAT, 1x3x224x224]
-  %template_3d_joints[FLOAT, 1x21x3]
-  %template_vertices_sub[FLOAT, 1x195x3]
-) initializers (
-"""
+
 encoder_input_obj = torch.load("data/encoder_input_obj.pt")
 encoder_input = torch.load("data/encoder_input.pt")
 
@@ -24,9 +18,9 @@ print(f"encoder_input_obj: {encoder_input_obj.shape}")
 sdf_values_hand, sdf_values_obj, voxel_origin, voxel_size = ort_sess.run(None, {"encoder_input": encoder_input.numpy(), "encoder_input_obj": encoder_input_obj.numpy()})
 # pred_camera, pred_3d_joints, pred_vertices_sub, pred_vertices, hidden_states, att, *rest = outputs
 # # Print Result 
-np.save('onnx_output_hand', sdf_values_hand)
+np.save('data/output/onnx_output_hand', sdf_values_hand)
 print("saved.")
-np.save('onnx_output_obj', sdf_values_obj)
+np.save('data/output/onnx_output_obj', sdf_values_obj)
 print("saved.")
 #print(outputs[2])
 # print(pred_vertices.shape)
